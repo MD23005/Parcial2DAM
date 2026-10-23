@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Botón de Login sin presionar -->
+    <item android:state_pressed="false">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#CAE8FA"/>
+            <corners android:radius="5dp"/>
+            <stroke android:color="#FFFFFF" android:width="1dp"/>
+        </shape>
+    </item>
+
+    <!-- Botón de Login presionado -->
+    <item android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#8BA4B0"/>
+            <corners android:radius="5dp"/>
+            <stroke android:color="#FFFFFF" android:width="1dp"/>
+        </shape>
+    </item>
+
+</selector>

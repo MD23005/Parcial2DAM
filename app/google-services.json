@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623122727978",
+    "project_id": "barberiadb-8fbae",
+    "storage_bucket": "barberiadb-8fbae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623122727978:android:a502c17b62685bf26fef53",
+        "android_client_info": {
+          "package_name": "dam.project.parcial2dam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5fSWkJX3KMIRj8UFg_v5OVrf1Y4Ihdac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
