@@ -3,11 +3,13 @@ package dam.project.parcial2dam.ui;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     private LinearLayout layoutCitas;
     private Button btnGuardarCita;
     private Button btnCancelarEdicion;
+    private ImageButton btnRegresar;
 
     private AppDatabase db;
     private String userId;
@@ -95,6 +98,10 @@ public class AppointmentsActivity extends AppCompatActivity {
 
         btnCancelarEdicion.setVisibility(View.GONE);
 
+        btnRegresar = findViewById(R.id.btnRegresar);
+
+        btnRegresar.setOnClickListener(v -> finish());
+
         mostrarCitas();
         programarSincronizacion();
     }
@@ -102,7 +109,13 @@ public class AppointmentsActivity extends AppCompatActivity {
     private void mostrarSelectorFecha() {
         Calendar calendario = Calendar.getInstance();
 
-        new DatePickerDialog(
+        Calendar hoy = Calendar.getInstance();
+        hoy.set(Calendar.HOUR_OF_DAY, 0);
+        hoy.set(Calendar.MINUTE, 0);
+        hoy.set(Calendar.SECOND, 0);
+        hoy.set(Calendar.MILLISECOND, 0);
+
+        DatePickerDialog calendar = new DatePickerDialog(
                 this,
                 (view, year, month, day) -> {
                     String fecha = String.format(
@@ -118,7 +131,11 @@ public class AppointmentsActivity extends AppCompatActivity {
                 calendario.get(Calendar.YEAR),
                 calendario.get(Calendar.MONTH),
                 calendario.get(Calendar.DAY_OF_MONTH)
-        ).show();
+        );
+
+        calendar.getDatePicker().setMinDate(hoy.getTimeInMillis());
+
+        calendar.show();
     }
 
     private void mostrarSelectorHora() {

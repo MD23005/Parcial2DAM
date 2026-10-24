@@ -64,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void cargarDatosPerfil() {
         if (emailActual == null) return;
 
-        // 1. Buscamos al usuario en ROOM usando el email
+        //  Buscamos al usuario en ROOM usando el email
         LocalUser localUser = AppDatabase.getInstance(this).userDAO().buscarUsuarioPorMail(emailActual);
 
         if (localUser != null) {
@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
             tvName.setText(localUser.nombre);
             tvEmail.setText(localUser.email);
 
-            // 2. Extraemos el UID de Room y lo usamos para buscar en Firestore
+            //  Extraemos el UID de Room y lo usamos para buscar en Firestore
             String uidParaFirestore = localUser.uid;
 
             FirebaseFirestore.getInstance().collection("usuarios").document(uidParaFirestore)

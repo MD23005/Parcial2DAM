@@ -105,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 // Iniciar sesión
                                 guardarSesion(uidNube, email, nombreNube);
+
                                 goToIndex(email);
                             } else {
                                 Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();

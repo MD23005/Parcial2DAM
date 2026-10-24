@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import dam.project.parcial2dam.R;
+import dam.project.parcial2dam.ui.AppointmentsActivity;
 
 public class IndexActivity extends AppCompatActivity
         implements OnMapReadyCallback {
