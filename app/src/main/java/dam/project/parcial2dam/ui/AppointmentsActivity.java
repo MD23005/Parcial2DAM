@@ -3,7 +3,7 @@ package dam.project.parcial2dam.ui;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.media.Image;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -22,18 +22,30 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import dam.project.parcial2dam.R;
 import dam.project.parcial2dam.db.AppDatabase;
 import dam.project.parcial2dam.db.Appointment;
+import dam.project.parcial2dam.db.LocalUser;
+import dam.project.parcial2dam.db.UserDAO;
 import dam.project.parcial2dam.sync.AppointmentSyncWorker;
 
 public class AppointmentsActivity extends AppCompatActivity {
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private EditText edtCliente;
     private EditText edtTelefono;
@@ -47,6 +59,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     private ImageButton btnRegresar;
 
     private AppDatabase db;
+    private String emailUser;
     private String userId;
     private String citaEditandoId;
 
@@ -55,11 +68,15 @@ public class AppointmentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointments);
 
+        emailUser = getIntent().getStringExtra("email");
+        if(emailUser == null){
+            SharedPreferences pref = getSharedPreferences("session_prefs", MODE_PRIVATE);
+            emailUser = pref.getString("email", null);
+        }
+
         db = AppDatabase.getInstance(this);
 
-        userId = getSharedPreferences(
-                "session_prefs", MODE_PRIVATE
-        ).getString("uid", null);
+        userId = buscarIdUsuario(emailUser);
 
         if (userId == null || userId.trim().isEmpty()) {
             Toast.makeText(
@@ -417,5 +434,14 @@ public class AppointmentsActivity extends AppCompatActivity {
             mostrarCitas();
             programarSincronizacion();
         }
+    }
+
+    private String buscarIdUsuario(String email) {
+        LocalUser user = db.userDAO().buscarUsuarioPorMail(email);
+
+        if (user != null) {
+            return user.uid;
+        }
+        return null;
     }
 }

@@ -79,7 +79,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if(userLocal != null){
             if(BCrypt.checkpw(pass, userLocal.password)){
-                guardarSesion(userLocal.uid, userLocal.email, userLocal.nombre);
+                if(swLogin.isChecked()){
+                    guardarSesion(userLocal.uid, userLocal.email, userLocal.nombre);
+                }
                 goToIndex(email);
             }else{
                 Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
@@ -104,7 +106,9 @@ public class LoginActivity extends AppCompatActivity {
                                 AppDatabase.getInstance(this).userDAO().insertarUsuario(nuevoLocal);
 
                                 // Iniciar sesión
-                                guardarSesion(uidNube, email, nombreNube);
+                                if(swLogin.isChecked()){
+                                    guardarSesion(uidNube, email, nombreNube);
+                                }
 
                                 goToIndex(email);
                             } else {

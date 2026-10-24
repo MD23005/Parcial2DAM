@@ -55,6 +55,7 @@ public class IndexActivity extends AppCompatActivity
                     IndexActivity.this,
                     AppointmentsActivity.class
             );
+            intent.putExtra("email", emailUser);
             startActivity(intent);
         });
 

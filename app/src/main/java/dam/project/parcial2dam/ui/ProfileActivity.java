@@ -151,7 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
                         dialog.dismiss();
                         Intent intent = new Intent(ProfileActivity.this, RegisterActivity.class);
                         intent.putExtra("modo", "editar");
-                        intent.putExtra("email", emailActual); // Enviamos el email en lugar del uid
+                        intent.putExtra("uid", usuarioLocal.uid);
                         startActivity(intent);
                     } else {
                         etPassword.setError("Contraseña incorrecta");
