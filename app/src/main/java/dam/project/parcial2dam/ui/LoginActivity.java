@@ -119,19 +119,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void guardarSesion(String uid, String email, String nombre){
-        SharedPreferences pref = getSharedPreferences("session_prefs", MODE_PRIVATE);
-        if(swLogin.isChecked()){
-            pref.edit()
-                    .putString("uid", uid)
-                    .putString("email", email)
-                    .putString("nombre", nombre)
-                    .apply();
 
-        }else{
-            pref.edit().clear().apply();
-        }
+    private void guardarSesion(String uid, String email, String nombre) {
+        SharedPreferences pref = getSharedPreferences(
+                "session_prefs",
+                MODE_PRIVATE
+        );
+
+        pref.edit()
+                .putString("uid", uid)
+                .putString("email", email)
+                .putString("nombre", nombre)
+                .apply();
     }
+
 
     private void goToIndex(String email){
         Intent intent = new Intent(this, IndexActivity.class);
