@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private final static String PREF = "session_prefs";
     private EditText edtEmail, edtPass;
     private Button btnLogin;
-    private Switch swLogin;
+    private SwitchMaterial swLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         if(userLocal != null){
             if(BCrypt.checkpw(pass, userLocal.password)){
                 guardarSesion(userLocal.uid, userLocal.email, userLocal.nombre);
-                goToIndex();
+                goToIndex(email);
             }else{
                 Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
             }
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 // Iniciar sesión
                                 guardarSesion(uidNube, email, nombreNube);
-                                goToIndex();
+                                goToIndex(email);
                             } else {
                                 Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
                             }
@@ -133,8 +133,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void goToIndex(){
-        startActivity(new Intent(this, IndexActivity.class));
+    private void goToIndex(String email){
+        Intent intent = new Intent(this, IndexActivity.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
         finish();
     }
 }

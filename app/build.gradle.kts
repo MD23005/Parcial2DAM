@@ -1,7 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if(localPropertiesFile.exists()){
+    localPropertiesFile.inputStream().use { stream ->
+        localProperties.load(stream)
+    }
 }
 
 android {
@@ -18,6 +28,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["MAPS_API"] = localProperties.getProperty("MAPS_API") ?: "CLAVE_FALTANTE"
     }
 
     buildTypes {
@@ -54,4 +66,5 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+
 }

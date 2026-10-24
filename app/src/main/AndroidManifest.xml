@@ -13,10 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.Starting">
+        android:theme="@style/Theme.Parcial2dam">
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:theme="@style/Theme.App.Starting"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,8 +26,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.IndexActivity"/>
+        <activity android:name=".ui.LoginActivity"/>
+        <activity android:name=".ui.ProfileActivity"/>
+        <activity android:name=".ui.RegisterActivity"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAW_7dORHrC3EBfU351fVkiUzOnf3VZBjY" />
+            android:value="${MAPS_API}" />
     </application>
 </manifest>

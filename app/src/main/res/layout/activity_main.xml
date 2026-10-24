@@ -115,6 +115,7 @@
             android:layout_height="wrap_content"
             android:text="Si no posees una cuenta puedes crear una acá"
             android:textAlignment="center"
+            android:textSize="16dp"
             android:textColor="@color/black"
             android:layout_marginBottom="15dp"/>
 

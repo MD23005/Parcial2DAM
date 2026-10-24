@@ -1,6 +1,9 @@
 package dam.project.parcial2dam.ui;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -128,18 +131,26 @@ public class RegisterActivity extends AppCompatActivity {
         datos.put("email", email);
         datos.put("password", hashPassword);
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+            Toast.makeText(this, "Guardado localmente. Se sincronizará luego.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         db.collection("usuarios").document(nuevoUid).set(datos)
                 .addOnSuccessListener(unused -> {
-                    // Actualizar estado a sincronizado en Room
                     nuevoUsuario.sincronizado = true;
                     AppDatabase.getInstance(this).userDAO().insertarUsuario(nuevoUsuario);
 
                     Toast.makeText(this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
-                    finish(); // Volver al login
+                    finish();
                 })
                 .addOnFailureListener(e -> {
-                    // Si falla la nube, se queda guardado en Room (pendiente de sync)
-                    Toast.makeText(this, "Guardado localmente. Se sincronizará luego.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "La cuenta se ha registrado exitosamente, los datos se sincronizarán cuando haya internet, puede regresar a la vista anterior", Toast.LENGTH_LONG).show();
                     finish();
                 });
     }
@@ -191,14 +202,23 @@ public class RegisterActivity extends AppCompatActivity {
             datosActualizados.put("password", nuevoHash);
         }
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+            Toast.makeText(this, "Los datos se han guardado y se sincronizarán cuando haya internet, puede regresar a la vista anterior", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         db.collection("usuarios").document(uid)
-                .update(datosActualizados) // Usamos update para no borrar otros campos que existan
+                .update(datosActualizados)
                 .addOnSuccessListener(unused -> {
-                    // Éxito en la nube: actualizamos el estado en Room a sincronizado
+                    // ... (tu código de éxito)
                     usuarioActualizado.sincronizado = true;
                     AppDatabase.getInstance(this).userDAO().insertarUsuario(usuarioActualizado);
 
-                    // Actualizamos SharedPreferences por si cambió el nombre o el correo
                     SharedPreferences prefs = getSharedPreferences("session_prefs", MODE_PRIVATE);
                     prefs.edit()
                             .putString("nombre", nombre)
@@ -206,19 +226,16 @@ public class RegisterActivity extends AppCompatActivity {
                             .apply();
 
                     Toast.makeText(this, "Datos actualizados correctamente", Toast.LENGTH_SHORT).show();
-                    finish(); // Cierra la pantalla de edición y vuelve al Perfil/Home
+                    finish();
                 })
                 .addOnFailureListener(e -> {
-                    // Si falla la nube (ej. sin internet), el cambio se quedó en Room (pendiente de sync)
                     Toast.makeText(this, "Guardado localmente. Se sincronizará cuando haya conexión.", Toast.LENGTH_LONG).show();
 
-                    // Actualizamos SharedPreferences de todos modos
                     SharedPreferences prefs = getSharedPreferences("session_prefs", MODE_PRIVATE);
                     prefs.edit()
                             .putString("nombre", nombre)
                             .putString("email", email)
                             .apply();
-
                     finish();
                 });
     }

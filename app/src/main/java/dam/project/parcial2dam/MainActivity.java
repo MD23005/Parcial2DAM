@@ -3,6 +3,8 @@ package dam.project.parcial2dam;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.core.splashscreen.SplashScreen;
@@ -20,23 +22,34 @@ public class MainActivity extends AppCompatActivity {
     boolean isReady = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
 
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         splashScreen.setKeepOnScreenCondition(() -> !isReady);
 
         super.onCreate(savedInstanceState);
 
-        SharedPreferences pref = getSharedPreferences("session_prefs", MODE_PRIVATE);
-        String savedEmail = pref.getString("email", null);
-        isReady = true;
 
-        Intent intent = (savedEmail != null && !savedEmail.isEmpty()) ? new Intent(this, IndexActivity.class) : new Intent(this, LoginActivity.class);
-
-        startActivity(intent);
-
-        finish();
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
 
+            SharedPreferences pref = getSharedPreferences("session_prefs", MODE_PRIVATE);
+            String savedEmail = pref.getString("email", null);
+
+
+            Intent intent;
+            if (savedEmail != null && !savedEmail.isEmpty()) {
+                intent = new Intent(this, IndexActivity.class);
+            } else {
+                intent = new Intent(this, LoginActivity.class);
+            }
+
+            startActivity(intent);
+
+
+            isReady = true;
+            finish();
+
+        }, 1500);
     }
 
 }

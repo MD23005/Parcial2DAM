@@ -15,6 +15,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/btnRegresar"
             android:src="@drawable/arrow_left_solid_full"
             android:backgroundTint="#00FFFFFF"/>
 
@@ -81,6 +82,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
+                android:id="@+id/btnSincronizar"
                 android:layout_height="wrap_content"
                 android:text="Sincronizar información"
                 android:background="@drawable/login_btn"
@@ -96,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/pencil_solid_full"
-                android:id="@+id/btnEdit"/>
+                android:id="@+id/btnEditar"/>
         </LinearLayout>
 
     </LinearLayout>
